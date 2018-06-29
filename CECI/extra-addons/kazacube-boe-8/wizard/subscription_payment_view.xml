@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="subscription_payment_form_view" model="ir.ui.view">
+            <field name="name">subscription.payment.form</field>
+            <field name="model">subscription.payment</field>
+            <field name="arch" type="xml">
+                <form string="Subscription Payment">
+
+                        <group>
+                            <group>
+                            <field name="receipt_date"/>
+                            <field name="bank_id" domain="[('is_bank','=',True)]" />
+                            </group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </group>
+
+                    <footer>
+                        <button string="Valider" name="action_done" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+        <record id="action_subscription_payment_form" model="ir.actions.act_window">
+            <field name="name">Constat de paiement</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">subscription.payment</field>
+            <field name="view_mode">form</field>
+        </record>
+
+    </data>
+</openerp>

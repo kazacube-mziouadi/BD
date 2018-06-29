@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <record model="ir.ui.view" id="boe_view_account_journal_form">
+            <field name="name">boe Journal </field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency']" position="after">
+                    <field name="is_bank"/>
+                    <field name="is_check"/>
+                    <field name="is_boe"/>
+                    <field name="is_operation" />
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="constat_voucher_payement_view_form" model="ir.ui.view">
+            <field name="name">constat.payment.voucher.receipt.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='proforma_voucher']" position="after">
+                    <button name="action_encashment" type="object"
+                           attrs="{'invisible':['|','|',('state','=','draft'),('is_paid','=',True),('state','=','collected')]}"
+                           string="Constat Encaissement"/>
+                </xpath>
+                <field name="state" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,collected" statusbar_colors='{"proforma":"blue"}'/>
+                </field>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                   <field name="is_paid" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                   <field name="check_journal" invisible="1"/>
+                </xpath>
+                  <xpath expr="//field[@name='partner_id']" position="after">
+                   <field name="boe_journal" invisible="1"/>
+                </xpath>
+                  <xpath expr="//field[@name='partner_id']" position="after">
+                   <field name="journal_type" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='date']" position="after">
+                   <field name="check_end_date"  attrs="{'invisible':['|','|',('journal_type','=','cash'),('boe_journal','=',True),
+                                                                                ('journal_type','=','bank'),('check_journal','=',False)],
+                                                        'required':[('check_journal','=',True)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='date']" position="after">
+                   <field name="boe_end_date"  attrs="{'invisible':['|','|',('journal_type','=','cash'),('check_journal','=',True),
+                                                                         ('journal_type','=','bank'),('boe_journal','=',False) ],
+                                                        'required':[('boe_journal','=',True)]}"/>
+                </xpath>
+                <xpath expr="//page[2]" position="after">
+                   <page string="Information sur l'encaissement" attrs="{'invisible':[('boe_journal','=',False),('check_journal','=',False)]}">
+                       <group>
+                            <field name="collecting_date" readonly="1"/>
+                            <field name="collecting_bank" readonly="1"/>
+                            <field name="collecting_description" readonly="1"/>
+                       </group>
+                   </page>
+                </xpath>
+            </field>
+        </record>
+
+     <!--    &lt;!&ndash; Inherit Form View to Modify it&ndash;&gt;-->
+        <record id="constat_voucher_supplier_payement_view_form" model="ir.ui.view">
+            <field name="name">constat.payment.voucher.supplier.form</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='proforma_voucher']" position="after">
+                    <button name="action_encashment" type="object"
+                           attrs="{'invisible':['|','|',('state','=','draft'),('is_paid','=',True),('state','=','collected')]}"
+                           string="Constat Encaissement"/>
+                </xpath>
+                <field name="state" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,collected" statusbar_colors='{"proforma":"blue"}'/>
+                </field>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                   <field name="is_paid" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                   <field name="check_journal" invisible="1"/>
+                </xpath>
+                  <xpath expr="//field[@name='partner_id']" position="after">
+                   <field name="boe_journal" invisible="1"/>
+                </xpath>
+                  <xpath expr="//field[@name='partner_id']" position="after">
+                   <field name="journal_type" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='date']" position="after">
+                   <field name="check_end_date"  attrs="{'invisible':['|','|',('journal_type','=','cash'),('boe_journal','=',True),
+                                                                                ('journal_type','=','bank'),('check_journal','=',False)],
+                                                        'required':[('check_journal','=',True)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='date']" position="after">
+                   <field name="boe_end_date"  attrs="{'invisible':['|','|',('journal_type','=','cash'),('check_journal','=',True),
+                                                                         ('journal_type','=','bank'),('boe_journal','=',False) ],
+                                                        'required':[('boe_journal','=',True)]}"/>
+                </xpath>
+                <xpath expr="//page[2]" position="after">
+                   <page string="Information sur l'encaissement" attrs="{'invisible':[('boe_journal','=',False),('check_journal','=',False)]}">
+                       <group>
+                            <field name="collecting_date" readonly="1"/>
+                            <field name="collecting_bank" readonly="1"/>
+                            <field name="collecting_description" readonly="1"/>
+                       </group>
+                   </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

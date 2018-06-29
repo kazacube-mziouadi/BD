@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <!--<record id="view_boe_partner_accounts" model="ir.ui.view">-->
+            <!--<field name="name">BOE.partner.accounts</field>-->
+            <!--<field name="model">res.partner</field>-->
+            <!--<field name="inherit_id" ref="account.view_partner_property_form"/>-->
+            <!--<field name="arch" type="xml">-->
+
+                <!--<xpath expr="//field[@name='property_account_receivable']" position="after">-->
+                    <!---->
+                <!--</xpath>-->
+                <!--<xpath expr="//field[@name='property_account_payable']" position="after">-->
+                    <!---->
+                <!--</xpath>-->
+
+            <!--</field>-->
+        <!--</record>-->
+
+
+
+        <record id="view_boe_partner_accounts" model="ir.ui.view">
+             <field name="name">res.partner.property.form.inherit</field>
+             <field name="model">res.partner</field>
+             <field name="priority">2</field>
+             <field name="inherit_id" ref="base.view_partner_form"/>
+             <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
+             <field name="arch" type="xml">
+                 <page name="sales_purchases" position="after">
+                 <page string="Accounting" col="4" name="accounting" attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}">
+                     <group>
+                         <group>
+                             <field name="property_account_position_id" widget="selection"/>
+                         </group>
+                         <group>
+                             <field name="last_reconciliation_date"/>
+                         </group>
+                         <group>
+                             <field name="property_account_receivable_id"/>
+                             <field name="receivable_bill_account" groups="account.group_account_invoice"/>
+                             <field name="portfolio_check_account" groups="account.group_account_invoice"/>
+                             <field name="property_payment_term_id" widget="selection"/>
+                             <field name="credit_limit"/>
+                         </group>
+                         <group>
+                             <field name="property_account_payable_id"/>
+                             <field name="payable_bill_account" groups="account.group_account_invoice"/>
+                             <field name="remitted_check_account" groups="account.group_account_invoice"/>
+                             <field name="property_supplier_payment_term_id" widget="selection"/>
+                         </group>
+                     </group>
+                     <field name="bank_ids" context="{'default_partner_id': active_id, 'form_view_ref': 'base.view_partner_bank_form'}">
+                         <tree string="Bank Details">
+                             <field name="sequence" invisible="1"/>
+                             <field name="acc_number"/>
+                             <field name="bank_name"/>
+                         </tree>
+                     </field>
+                 </page>
+                 </page>
+             </field>
+         </record>
+    </data>
+</openerp>
